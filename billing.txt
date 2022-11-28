@@ -1,0 +1,39 @@
+create table items(id integer(4), price integer(4),  quantity integer(3));
+insert into items values('1001','25','10');
+insert into items values('1002','20','5');
+insert into items values('1003','15','10');
+insert into items values('1004','10','10');
+select * from items;
+
+DECLARE
+xitem_no items.id%type;
+xprice items.price%type;
+xquan items.quantity%type;
+req number(2);
+amount number(10);
+a number(2):=&a;
+BEGIN
+WHILE a>0 LOOP
+xitem_no:= :Enter_item_number;
+req:= :Enter_number_of_items;
+select price into xprice
+from items
+where id=xitem_no;
+
+select quantity into xquan
+from items
+where id=xitem_no;
+
+IF(req<=xquan)then
+update items
+set quanity=quantity_req where id=xitem_no;
+amount=amount+req*xprice;
+dbms_output.put_line('Rs.'||amount||'has to pay');
+a:=a-1;
+else
+dbms_output.put_line('not available');
+a:=a-1;
+END IF;
+END LOOP;
+END;
+
